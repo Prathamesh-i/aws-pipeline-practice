@@ -1,60 +1,17 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo Installing dependencies...
-      - echo Node version:
-      - node -v
-      - echo NPM version:
-      - npm -v
-      - echo Installing Angular CLI globally...
-      - npm install -g @angular/cli@latest
-      - echo Checking Angular CLI installation...
-      - which ng || echo "ng command not found"
-      - echo Installing project dependencies...
-      - npm install
-      - echo Listing installed packages:
-      - npm list --depth=0
-  
+      - npm install -g @angular/cli@17
   pre_build:
     commands:
-      - echo Checking project structure...
-      - ls -la
-      - echo Checking for package.json...
-      - cat package.json || echo "package.json not found"
-      - echo Checking for angular.json...
-      - cat angular.json || echo "angular.json not found"
-  
+      - npm install
   build:
     commands:
-      - echo Building the Angular application...
-      - export PATH=$PATH:$(npm bin)
-      - echo PATH=$PATH
-      - echo Checking Angular CLI version...
-      - ng version || echo "ng command failed"
-      - echo Building project...
-      - ng build || echo "ng build failed, trying alternative build command"
-      - npm run build || echo "npm run build failed"
-  
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Checking directory structure...
-      - ls -la
-      - echo Checking for dist directory...
-      - ls -la dist/ || echo "dist/ directory not found"
-      - echo Checking contents of dist directory...
-      - find dist -type f | sort || echo "No files found in dist directory"
-
+      - ng build -c production
 artifacts:
+  base-directory: dist/my-angular-project
   files:
     - '**/*'
-  base-directory: 'dist'
-  discard-paths: no
-
-cache:
-  paths:
-    - 'node_modules/**/*'
