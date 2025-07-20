@@ -1,17 +1,31 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
-      nodejs: 20
+      nodejs: 16  # You can use 14, 16, or 18 depending on your Angular version
     commands:
-      - npm install -g @angular/cli@17
-  pre_build:
-    commands:
+      - echo Installing dependencies...
+      - npm install -g @angular/cli
       - npm install
+  
   build:
     commands:
-      - ng build -c production
+      - echo Building the Angular application...
+      - ng build --configuration production
+      # If you're using an older version of Angular, you might need to use this instead:
+      # - ng build --prod
+  
+  post_build:
+    commands:
+      - echo Build completed on `date`
+
 artifacts:
-  base-directory: dist/my-angular-project
   files:
     - '**/*'
+  base-directory: 'dist/my-angular-project'  # This is your actual project name
+  discard-paths: no
+
+cache:
+  paths:
+    - 'node_modules/**/*'
